@@ -12,7 +12,7 @@ const Container = styled.div`
 `
 
 const Header = styled.header`
-height:10vh;
+height:15vh;
 display:flex;
 justify-content:center;
 align-items:center;
@@ -42,6 +42,10 @@ const Coin = styled.li`
 const Title = styled.h1`
     font-size: 48px;
     color:${props=>props.theme.accentColor};
+    background-color: ${props=>props.theme.boxColor};
+    padding: 10px;
+    margin: 10px;
+    border-radius: 15px;
 `
 
 const Loader=styled.span`
@@ -76,7 +80,7 @@ function Coins(){
             </title>
         </Helmet>
         <Header>
-            <Title>Coin Tracker</Title>
+            <Title>COIN TRACKER</Title>
 
         </Header>
         

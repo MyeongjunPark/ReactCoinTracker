@@ -50,6 +50,7 @@ const OverviewItem = styled.div`
 `;
 const Description = styled.p`
   margin: 20px 0px;
+  color:${props=>props.theme.boxColor}
 `;
 const Tabs=styled.div`
     display: grid;
