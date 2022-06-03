@@ -1,6 +1,5 @@
 import { useQuery } from "react-query";
 import { fetchCoinHistory } from "./Api";
-import {Outlet, useOutletContext} from 'react-router-dom'
 import ApexChart from 'react-apexcharts'
 
 interface IHistorical{
@@ -27,18 +26,21 @@ function Chart({coinId}:ChartProps){
     )
 
     return <div> {isLoading? "Loading chart..." : <ApexChart 
-    type="line" 
-    series={[
-        {
-            name:"price",
-            data: data?.map(price=>price.close) as number[],
-        },
-    ]}
+    type="candlestick" 
+    series={[{
+        data:data?.map((data)=>{
+            return{
+                x:data.time_open,
+                y:[data.open.toFixed(3),data.high.toFixed(3),data.low.toFixed(3),data.close.toFixed(3)]
+            }
+        })
+    }] as unknown as number[]}
     options={{
         theme:{
             mode:"dark"
         },
         chart:{
+            type: 'candlestick',
         height: 300,
         width: 500,
         toolbar:{
@@ -46,28 +48,15 @@ function Chart({coinId}:ChartProps){
         },
         background:"transparent"
     },
-    stroke:{
-        curve:"smooth",
-        width: 5,
-    },
-    grid:{show:false},
+
     yaxis:{show:false},
     xaxis:{
         labels:{show:false},
         axisTicks:{show:false},
         axisBorder:{show:false},
         type:"datetime",
-        categories:data?.map(price=>price.time_close) as string[]
+        
     },
-    fill:{
-        type:"gradient", gradient:{gradientToColors:["#4cd137"],stops:[0, 100]}
-    },
-    colors:['#00a8ff'],
-    tooltip:{
-        y: {
-            formatter:(value)=>`$ ${value.toFixed(3)}`
-        }
-    }
 }}/>}</div>
     
 }

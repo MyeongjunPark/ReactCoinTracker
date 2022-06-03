@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+
 import { useQuery } from "react-query";
 import { fetchCoins } from "./Api";
 import { Helmet } from "react-helmet";
@@ -21,8 +21,8 @@ align-items:center;
 const CoinsList = styled.ul``
 
 const Coin = styled.li`
-    background-color: white;
-    color:${props=>props.theme.bgColor};
+    background-color: ${props=>props.theme.boxColor};
+    color:${props=>props.theme.textColor};
     margin-bottom: 10px;
     border-radius: 15px;
     a{
@@ -30,7 +30,7 @@ const Coin = styled.li`
         align-items: center;
         transition:color 0.2s ease-in-out;
         padding:20px;
-        color:${(props)=>props.theme.bgColor}
+        color:${(props)=>props.theme.textColor}
     }
     &:hover{
         a{
@@ -55,6 +55,7 @@ const Img = styled.img`
     margin-right: 10px;
 `
 
+
 interface CoinInterface{
     id: string;
     name: string;
@@ -66,32 +67,24 @@ interface CoinInterface{
 }
 function Coins(){
     const { isLoading, data }=useQuery<CoinInterface[]>("allCoins", fetchCoins)
-/*     const [coins,setCoins]=useState<CoinInterface[]>([])
-    const [loading,setLoading]=useState(true)
-    useEffect(()=>{
-        (async()=>{
-
-            setCoins(json.slice(0,100))
-            setLoading(false)
-            console.log(coins)
-        })()
-    },[]) */
 
     return(
     <Container>
             <Helmet>
             <title>
-            코인
+            Coin Tracker
             </title>
         </Helmet>
         <Header>
-            <Title>코인</Title>
+            <Title>Coin Tracker</Title>
+
         </Header>
+        
         {isLoading ? (<Loader>Loading...</Loader>):(<CoinsList>
             {data?.slice(0,100).map(coin => <Coin key={coin.id}>
                 <Link to={`/${coin.id}`} state={coin}>
                 <Img src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`} />
-                    {coin.name} &rarr;</Link>
+                    {coin.name}</Link>
                 </Coin>)!}
         </CoinsList>)}
     </Container>)

@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Router from "./routes/Router";
 import {createGlobalStyle} from 'styled-components'
-import {ReactQueryDevtools} from 'react-query/devtools'
+//import {ReactQueryDevtools} from 'react-query/devtools'
+import { lightThemes, darkTheme } from "./theme";
+import { ThemeProvider } from "styled-components";
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
 html, body, div, span, applet, object, iframe,
@@ -60,12 +62,39 @@ a{
   text-decoration: none;
 }
 `
+
+const ThemeBtn = styled.div`
+    margin: 0 auto;
+    margin-top: 10px;
+    width:60px;
+    height:60px;
+    background-color:${props=>props.theme.boxColor};
+    border-radius:30px;
+    text-align:center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    div{
+      color:${(props)=>props.theme.textColor}
+    }
+    &:hover{
+      color:${(props)=>props.theme.accentColor}
+    }
+`
+
 function App() {
+  const [themeMode,setThemeMode] = useState('dark');
+const theme = themeMode === 'dark' ? darkTheme:lightThemes;
+const toggleTheme=()=>setThemeMode(themeMode==='dark'?'light':'dark')
 
   return (
     <>
+    <ThemeProvider theme={theme}>
+    <ThemeBtn onClick={toggleTheme}>{  themeMode === 'light' ? 'DARK':'LIGHT'}</ThemeBtn>
     <GlobalStyle /><Router />
-    <ReactQueryDevtools />
+    </ThemeProvider>
     </>
 
   );

@@ -10,7 +10,7 @@ const Container = styled.div`
 
 const PriceView = styled.div`
     justify-content: space-between;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: ${props=>props.theme.boxColor};
     padding: 10px 20px;
     border-radius: 10px;
     margin-bottom: 5px;
@@ -62,7 +62,7 @@ function Price({coinId}:ICoinId){
     const {isLoading, data}=useQuery<PriceData>(["tickers",coinId], 
     ()=>fetchCoinTickers(coinId),
     {
-        //refetchInterval: 5000,
+        refetchInterval: 5000,
     }
     )
     return(
@@ -78,10 +78,23 @@ function Price({coinId}:ICoinId){
                 </PriceView>
                 <PriceView>
                     <PriceItem>
-                        <span>Percent Change 24h:</span>
-                        <span>{data?.quotes.USD.percent_change_24h}</span>
+                        <span>Percent Change 30min:</span>
+                        <span>{data?.quotes.USD.percent_change_30m}%</span>
                     </PriceItem>
                 </PriceView>
+                <PriceView>
+                    <PriceItem>
+                        <span>Percent Change 1hour:</span>
+                        <span>{data?.quotes.USD.percent_change_1h}%</span>
+                    </PriceItem>
+                </PriceView>
+                <PriceView>
+                    <PriceItem>
+                        <span>Percent Change 24h:</span>
+                        <span>{data?.quotes.USD.percent_change_24h}%</span>
+                    </PriceItem>
+                </PriceView>
+                
                 <PriceView>
                     <PriceItem>
                         <span>Maximum Price:</span>

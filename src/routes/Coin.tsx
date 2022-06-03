@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { Routes, Route, useLocation, useParams,Link,useMatch } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoinInfo, fetchCoinTickers } from "./Api";
-import { Outlet } from "react-router-dom";
 import Chart from "./Chart";
 import Price from "./Price";
 import {Helmet} from 'react-helmet'
@@ -34,7 +32,7 @@ const Header = styled.header`
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${props=>props.theme.boxColor};
   padding: 10px 20px;
   border-radius: 10px;
 `;
@@ -64,7 +62,7 @@ const Tab=styled.span<{isActive:boolean}>`
     text-transform: uppercase;
     font-size:12px;
     font-weight:400;
-    background-color: rgba(0,0,0,0.5);
+    background-color: ${props=>props.theme.boxColor};
     padding: 7px 0px;
     border-radius: 10px;
 
@@ -77,10 +75,12 @@ const Tab=styled.span<{isActive:boolean}>`
 const HomeBtn = styled.div`
     width:110px;
     height:50px;
-    background-color:rgba(0,0,9,0.5);
+    background-color:${props=>props.theme.boxColor};
     border-radius:10px;
     text-align:center;
-    padding:18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     a{
         display:block;
         color:${props=>props.theme.textColor}
@@ -90,6 +90,11 @@ const HomeBtn = styled.div`
             color:${(props)=>props.theme.accentColor}
         }
     }
+`
+const Img = styled.img`
+    width:40px;
+    height:40px;
+    margin-right: 10px;
 `
 
 interface RouteParams {
@@ -163,9 +168,10 @@ function Coin() {
     const {isLoading: tickersLoading, data:tickersData}=useQuery<PriceData>(["tickers",coinId], 
     ()=>fetchCoinTickers(coinId),
     {
-        //refetchInterval: 5000,
+        refetchInterval: 5000,
     }
     )
+
   const loading=infoLoading||tickersLoading;
   return (
     <Container>
@@ -175,16 +181,15 @@ function Coin() {
             </title>
         </Helmet>
       <Header>
-        <Title>
-          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
-        </Title>
-
-        <HomeBtn>
+      <HomeBtn>
             <Link to='/'>
                 GO HOME
             </Link>
         </HomeBtn>
- 
+        <Title>
+        <Img src={`https://coinicons-api.vercel.app/api/icon/${infoData?.symbol.toLowerCase()}`} />
+          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+        </Title>
       </Header>
       {loading ? (
         <Loader>Loading...</Loader>
@@ -201,7 +206,7 @@ function Coin() {
             </OverviewItem>
             <OverviewItem>
               <span>Price:</span>
-              <span>{tickersData?.quotes.USD.price}</span>
+              <span>{tickersData?.quotes.USD.price.toFixed(2)}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
