@@ -69,7 +69,7 @@ const Input=styled.input`
     margin-bottom:15px;
     border-radius:8px;
 `
-const SearchBtn=styled.button`
+const SearchBtn=styled.a`
     border:none;
     background-color:${props=>props.theme.boxColor};
     width:80px;
@@ -77,6 +77,16 @@ const SearchBtn=styled.button`
     border-radius:8px;
     cursor: pointer;
     margin-left: 5px;
+    display:inline-block;
+    padding-top:2px;
+    a{
+        color:${props=>props.theme.textColor}
+    }
+    &:hover{
+        a{
+            color:${(props)=>props.theme.accentColor}
+        }
+    }
 `
 
 interface CoinInterface{
@@ -94,13 +104,7 @@ function Coins(){
     const searchInput = (e:any)=>{
         setSearch(e.target.value)
     }
-    const searchBtn = ()=>{
-        if(search===''){
-            alert('검색어를 입력하세요.')
-        }else{
-            window.location.replace(`${process.env.PUBLIC_URL}/${search}`)
-        }
-    }
+
     return(
     <Container>
             <Helmet>
@@ -112,7 +116,9 @@ function Coins(){
             <Title>COIN TRACKER</Title>
         </Header>
         <Input onChange={searchInput} placeholder='btc-bitcoin or eth-ethereum' type="text" />
-        <SearchBtn onClick={searchBtn}>Search</SearchBtn>
+        <SearchBtn>
+            <Link to={`${process.env.PUBLIC_URL}/${search}`}>Search</Link>
+        </SearchBtn>
         {isLoading ? (<Loader>Loading...</Loader>):(<CoinsList>
             {data?.slice(0,100).map(coin => <Coin key={coin.id}>
                 <Link to={`/${coin.id}`} state={coin}>
