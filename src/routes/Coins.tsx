@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useQuery } from "react-query";
 import { fetchCoins } from "./Api";
 import { Helmet } from "react-helmet";
 import { useState } from "react";
+import {  } from "react-router-dom";
 
 const Container = styled.div`
     padding: 0px 20px;
@@ -69,7 +70,7 @@ const Input=styled.input`
     margin-bottom:15px;
     border-radius:8px;
 `
-const SearchBtn=styled.a`
+const SearchBtn=styled.button`
     border:none;
     background-color:${props=>props.theme.boxColor};
     width:80px;
@@ -79,13 +80,9 @@ const SearchBtn=styled.a`
     margin-left: 5px;
     display:inline-block;
     padding-top:2px;
-    a{
+    color:${props=>props.theme.textColor};
+    button{
         color:${props=>props.theme.textColor}
-    }
-    &:hover{
-        a{
-            color:${(props)=>props.theme.accentColor}
-        }
     }
 `
 
@@ -101,10 +98,18 @@ interface CoinInterface{
 function Coins(){
     const { isLoading, data }=useQuery<CoinInterface[]>("allCoins", fetchCoins)
     const [search, setSearch] = useState('')
+    const navigate = useNavigate();
     const searchInput = (e:any)=>{
         setSearch(e.target.value)
     }
+    const searchBtn = ()=>{
+        if(search===''){
+            alert('검색어를 입력하세요.')
+        }else{
 
+            navigate(`/${search}`)
+        }
+    }
     return(
     <Container>
             <Helmet>
@@ -116,9 +121,7 @@ function Coins(){
             <Title>COIN TRACKER</Title>
         </Header>
         <Input onChange={searchInput} placeholder='btc-bitcoin or eth-ethereum' type="text" />
-        <SearchBtn>
-            <Link to={`${process.env.PUBLIC_URL}/${search}`}>Search</Link>
-        </SearchBtn>
+        <SearchBtn onClick={searchBtn}>Search</SearchBtn>
         {isLoading ? (<Loader>Loading...</Loader>):(<CoinsList>
             {data?.slice(0,100).map(coin => <Coin key={coin.id}>
                 <Link to={`/${coin.id}`} state={coin}>
