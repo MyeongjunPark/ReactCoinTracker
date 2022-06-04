@@ -5,8 +5,9 @@ import {createGlobalStyle} from 'styled-components'
 //import {ReactQueryDevtools} from 'react-query/devtools'
 import { lightThemes, darkTheme } from "./theme";
 import { ThemeProvider } from "styled-components";
+import './css/Font.css'
 const GlobalStyle = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -53,8 +54,8 @@ table {
 *{
   box-sizing:border-box;
 }
+
 body{
-  font-family:'Source Sans Pro', sans-serif;
   background-color:${props=>props.theme.bgColor};
   color:${props=>props.theme.textColor};
 }
@@ -85,18 +86,18 @@ const ThemeBtn = styled.div`
 `
 
 function App() {
-  const [themeMode,setThemeMode] = useState('dark');
-const theme = themeMode === 'dark' ? darkTheme:lightThemes;
-const toggleTheme=()=>setThemeMode(themeMode==='dark'?'light':'dark')
+  const [themeMode,setThemeMode] = useState('light');
+const theme = themeMode === 'light' ? lightThemes:darkTheme;
+const toggleTheme=()=>setThemeMode(themeMode==='light'?'dark':'light')
 
   return (
     <>
     <ThemeProvider theme={theme}>
+    <GlobalStyle />
     <ThemeBtn onClick={toggleTheme}>{  themeMode === 'light' ? 'DARK':'LIGHT'}</ThemeBtn>
-    <GlobalStyle /><Router />
+    <Router />
     </ThemeProvider>
-    </>
-
+</>
   );
 }
 

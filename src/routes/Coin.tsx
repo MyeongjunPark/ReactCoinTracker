@@ -7,7 +7,7 @@ import Price from "./Price";
 import {Helmet} from 'react-helmet'
 
 const Title = styled.h1`
-  font-size: 48px;
+  font-size: 40px;
   color: ${(props) => props.theme.accentColor};
 `;
 
@@ -35,22 +35,22 @@ const Overview = styled.div`
   background-color: ${props=>props.theme.boxColor};
   padding: 10px 20px;
   border-radius: 10px;
+  gap: 1em;
+display:flex;
+flex-wrap:wrap;
 `;
 const OverviewItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
+  margin:10px;
   span:first-child {
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 400;
     text-transform: uppercase;
-    margin-bottom: 5px;
   }
 `;
 const Description = styled.p`
   margin: 20px 0px;
-  color:${props=>props.theme.boxColor}
+  color:${props=>props.theme.boxColor};
+  font-family: 'Cairo', sans-serif;
 `;
 const Tabs=styled.div`
     display: grid;
@@ -93,8 +93,8 @@ const HomeBtn = styled.div`
     }
 `
 const Img = styled.img`
-    width:40px;
-    height:40px;
+    width:30px;
+    height:30px;
     margin-right: 10px;
 `
 
@@ -203,7 +203,7 @@ function Coin() {
             </OverviewItem>
             <OverviewItem>
               <span>Symbol:</span>
-              <span>${infoData?.symbol}</span>
+              <span>{infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Price:</span>

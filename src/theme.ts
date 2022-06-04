@@ -4,11 +4,11 @@ export const darkTheme:DefaultTheme={
     boxColor:"#718093",
     bgColor:"#2f3640",
     textColor:"#f5f6fa",
-    accentColor:"#9c88ff",
+    accentColor:"#2980b9",
 }
 export const lightThemes:lightTheme={
-    boxColor:"#353b48",
+    boxColor:"#2980b9",
     bgColor:"#f5f6fa",
     textColor:"#f5f6fa",
-    accentColor:"#8c7ae6",
+    accentColor:"#353b48",
 }

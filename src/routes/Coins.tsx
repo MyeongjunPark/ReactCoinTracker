@@ -4,11 +4,13 @@ import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
 import { fetchCoins } from "./Api";
 import { Helmet } from "react-helmet";
+import { useState } from "react";
 
 const Container = styled.div`
     padding: 0px 20px;
     max-width:480px;
     margin: 0 auto;
+    text-align: center;
 `
 
 const Header = styled.header`
@@ -18,9 +20,16 @@ justify-content:center;
 align-items:center;
 `;
 
-const CoinsList = styled.ul``
+const CoinsList = styled.ul`
+gap: 1em;
+display:flex;
+flex-wrap:wrap;
+`
 
 const Coin = styled.li`
+    flex-grow:1;
+    flex-basis:100px;
+
     background-color: ${props=>props.theme.boxColor};
     color:${props=>props.theme.textColor};
     margin-bottom: 10px;
@@ -42,10 +51,7 @@ const Coin = styled.li`
 const Title = styled.h1`
     font-size: 48px;
     color:${props=>props.theme.accentColor};
-    background-color: ${props=>props.theme.boxColor};
-    padding: 10px;
-    margin: 10px;
-    border-radius: 15px;
+    font-family: 'Righteous', cursive;
 `
 
 const Loader=styled.span`
@@ -58,7 +64,20 @@ const Img = styled.img`
     height:35px;
     margin-right: 10px;
 `
-
+const Input=styled.input`
+    width:170px;
+    margin-bottom:15px;
+    border-radius:8px;
+`
+const SearchBtn=styled.button`
+    border:none;
+    background-color:${props=>props.theme.boxColor};
+    width:80px;
+    height:20px;
+    border-radius:8px;
+    cursor: pointer;
+    margin-left: 5px;
+`
 
 interface CoinInterface{
     id: string;
@@ -71,7 +90,17 @@ interface CoinInterface{
 }
 function Coins(){
     const { isLoading, data }=useQuery<CoinInterface[]>("allCoins", fetchCoins)
-
+    const [search, setSearch] = useState('')
+    const searchInput = (e:any)=>{
+        setSearch(e.target.value)
+    }
+    const searchBtn = ()=>{
+        if(search===''){
+            alert('검색어를 입력하세요.')
+        }else{
+            window.location.replace(`${process.env.PUBLIC_URL}/${search}`)
+        }
+    }
     return(
     <Container>
             <Helmet>
@@ -81,9 +110,9 @@ function Coins(){
         </Helmet>
         <Header>
             <Title>COIN TRACKER</Title>
-
         </Header>
-        
+        <Input onChange={searchInput} placeholder='btc-bitcoin or eth-ethereum' type="text" />
+        <SearchBtn onClick={searchBtn}>Search</SearchBtn>
         {isLoading ? (<Loader>Loading...</Loader>):(<CoinsList>
             {data?.slice(0,100).map(coin => <Coin key={coin.id}>
                 <Link to={`/${coin.id}`} state={coin}>
